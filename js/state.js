@@ -1,3 +1,4 @@
+import {DEPARTURE_DURATION} from './balloon-scale.js';
 export const locations = [
   ['Eiffel Tower','Paris','eiffel'],['Tower Bridge','London','tower-bridge'],
   ['Statue of Liberty','New York City','liberty'],['Tokyo Tower','Tokyo','tokyo'],
@@ -29,14 +30,15 @@ const DISSOLVE_START = 42000;
 const DISSOLVE_DURATION = 7000;
 export class Experience {
  constructor(){this.reset();}
- reset(){this.stage='write';this.worry='';this.colour='red';this.elapsed=0;this.route=[];this.messages=[];this.final='';this.transitScenes=[];}
+ reset(){this.stage='write';this.worry='';this.colour='red';this.elapsed=0;this.departureElapsed=0;this.route=[];this.messages=[];this.final='';this.transitScenes=[];}
  write(text){if(this.stage==='write')this.worry=characters(text).slice(0,200).join('');}
  prepare(){if(this.stage==='write'&&this.worry.trim())this.stage='ready';}
  edit(){if(this.stage==='ready')this.stage='write';}
  hold(){if(this.stage==='ready')this.stage='holding';}
  cancel(){if(this.stage==='holding')this.stage='ready';}
- release(){if(this.stage!=='holding')return;this.route=sample(locations,3);this.transitScenes=sample(TRANSIT_LANDSCAPES,3);this.messages=sample(passing,2);this.final=sample(closing,1)[0];this.stage='journey';this.elapsed=0;}
- advance(ms){if(!['journey','dissolving'].includes(this.stage))return;this.elapsed+=Math.max(0,ms);if(this.elapsed>=DISSOLVE_START+DISSOLVE_DURATION){this.stage='complete';this.worry='';}else if(this.elapsed>=DISSOLVE_START)this.stage='dissolving';}
+ release(){if(this.stage!=='holding')return;this.route=sample(locations,3);this.transitScenes=sample(TRANSIT_LANDSCAPES,3);this.messages=sample(passing,2);this.final=sample(closing,1)[0];this.stage='journey';this.elapsed=0;this.departureElapsed=0;}
+ advance(ms){if(!['journey','dissolving'].includes(this.stage))return;let remaining=Math.max(0,ms);if(this.departing){const consumed=Math.min(remaining,DEPARTURE_DURATION-this.departureElapsed);this.departureElapsed+=consumed;remaining-=consumed;}this.elapsed+=remaining;if(this.elapsed>=DISSOLVE_START+DISSOLVE_DURATION){this.stage='complete';this.worry='';}else if(this.elapsed>=DISSOLVE_START)this.stage='dissolving';}
+ get departing(){return this.stage==='journey'&&this.departureElapsed<DEPARTURE_DURATION;}
  // Only the final dissolution can change visibility. Travel and location holds stay opaque.
  get balloonOpacity(){if(this.stage==='complete')return 0;if(this.stage!=='dissolving')return 1;return Math.max(0,1-(this.elapsed-DISSOLVE_START)/DISSOLVE_DURATION);}
  get index(){return this.elapsed>=35000?2:this.elapsed>=21000?1:this.elapsed>=7000?0:-1;}
@@ -44,7 +46,7 @@ export class Experience {
  get reveal(){return this.elapsed>=35000||(this.elapsed>=7000&&this.elapsed<14000)||(this.elapsed>=21000&&this.elapsed<28000);}
  get transitIndex(){return this.elapsed>=28000?2:this.elapsed>=14000?1:0;}
  // A restrained 36.96-unit left-to-right drift over each seven-second travel segment.
- get transitOffset(){if(this.stage!=='journey'||this.reveal)return 0;return -TRANSIT_DRIFT/2+TRANSIT_DRIFT*Math.min(1,(this.elapsed-this.transitIndex*14000)/7000);}
+ get transitOffset(){if(this.stage!=='journey'||this.reveal||this.departing)return 0;return -TRANSIT_DRIFT/2+TRANSIT_DRIFT*Math.min(1,(this.elapsed-this.transitIndex*14000)/7000);}
  get cloudOffset(){return TRANSIT_DRIFT*Math.min(3,Math.max(0,this.transitIndex)+Math.min(1,Math.max(0,(this.elapsed-this.transitIndex*14000)/7000)));}
  get transitScene(){return this.transitScenes[this.transitIndex];}
  get message(){if(this.stage==='complete')return COMPLETE_MESSAGE;return this.reveal&&this.destination?format(this.index===2?this.final:this.messages[this.index],this.destination):TRANSIT_MESSAGES[this.transitIndex];}

@@ -97,7 +97,7 @@ While the user presses the button, give a subtle visual response and display:
 
 At release, select three distinct location records, two different passing message templates, and one final message template. The third location is the destination.
 
-| Active elapsed time | Event |
+| Journey time after the seven-second departure | Event |
 | --- | --- |
 | 0–7 seconds | Transit toward the first location. |
 | 7–14 seconds | Hold the first location and passing message. |
@@ -262,3 +262,9 @@ Keep the full-size balloon before release for writing and holding. During the fi
 All seven updated destination scenes are integrated into the main journey. Visit `http://localhost:8000/artwork.html` to review each scene with the same distant balloon scale used in the app.
 
 The closing title, subtitle, and “What will you let go of next?” fade in together after dissolution and the outgoing destination reflection have finished. The restart button appears after that shared fade-in completes.
+
+## Departure before transit
+
+After release, keep the original background and clouds stationary while the balloon shrinks to 58% size over seven seconds. Fade the arm away as before. Only after the balloon reaches its distant size should the first randomized transit landscape crossfade in and the travel clock begin. Reduced-motion users crossfade between fixed balloon sizes against the same original background.
+
+The existing 49-second journey follows this separate seven-second departure, for approximately 56 seconds from release to completion. All timing pauses while the tab is hidden.

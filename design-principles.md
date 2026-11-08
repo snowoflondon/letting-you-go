@@ -200,3 +200,9 @@ All seven updated destination scenes are integrated into the main journey. Visit
 Use one consistent 19px font size for all main messages below the illustration, including transit, destination reflections, and the final question. Apply balanced line wrapping to reduce short trailing lines, retaining the blank line between sentences. Do not resize individual messages by phase; preserve browser text enlargement.
 
 Primary action buttons use muted sage green (`#596E58`) with warm cream text (`#FFFBF4`) and a darker sage pressed state (`#485C47`). Keep the distinct outline, check mark, and label change on the held control.
+
+## Departure before transit
+
+After release, keep the original background and clouds stationary while the balloon shrinks to 58% size over seven seconds. Fade the arm away as before. Only after the balloon reaches its distant size should the first randomized transit landscape crossfade in and the travel clock begin. Reduced-motion users crossfade between fixed balloon sizes against the same original background.
+
+The existing 49-second journey follows this separate seven-second departure, for approximately 56 seconds from release to completion. All timing pauses while the tab is hidden.

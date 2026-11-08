@@ -35,18 +35,19 @@ function render(){
  $('heading').textContent=(['write','ready','holding'].includes(stage))?'What will you let go?':!finalTextAppearing?'A little farther away.':'In the sky, far away';
  $('subtitle').textContent=(['write','ready','holding'].includes(stage))?'Your worries will float away.':!finalTextAppearing?'With the winds, among the clouds':"You've let go of what you were holding onto";
  const reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
- const progress=travelling?departureProgress(model.elapsed):0;
- $('balloon').setAttribute('transform',balloonTransform(travelling&&!reducedMotion?journeyScale(model.elapsed):1));
+ const progress=travelling?departureProgress(model.departureElapsed):0;
+ $('balloon').setAttribute('transform',balloonTransform(travelling&&!reducedMotion?journeyScale(model.departureElapsed):1));
  $('balloon').style.opacity=String(model.balloonOpacity*(reducedMotion?1-progress:1));
  distantBalloon.setAttribute('transform',balloonTransform(DISTANT_SCALE));
  distantBalloon.style.opacity=String(reducedMotion?model.balloonOpacity*progress:0);
- const scene=travelling&&model.reveal?model.destination.id:travelling?model.transitScene:'city';
- const sceneKey=scene+(travelling&&!model.reveal?':transit':':still');
+ const inTransit=travelling&&!model.departing&&!model.reveal;
+ const scene=travelling&&model.reveal?model.destination.id:inTransit?model.transitScene:'city';
+ const sceneKey=scene+(inTransit?':transit':':still');
  if(sceneKey!==previousScene){
   const container=$('landscape'),old=container.lastElementChild;
   const layer=document.createElementNS('http://www.w3.org/2000/svg','g');
   layer.classList.add('scene-layer');layer.style.opacity='0';
-  const moving=travelling&&!model.reveal;
+  const moving=inTransit;
   // Neighbouring tiles keep the edges covered as the landscape drifts.
   layer.innerHTML=moving?`<g class="transit-pan">${[-400,0,400].map(x=>`<g transform="translate(${x} 0)">${sceneFor(scene)}</g>`).join('')}</g>`:sceneFor(scene);
   container.append(layer);
@@ -55,7 +56,7 @@ function render(){
  }
  const pan=$('landscape').lastElementChild?.querySelector('.transit-pan');
  if(pan)pan.setAttribute('transform',`translate(${window.matchMedia('(prefers-reduced-motion: reduce)').matches?0:model.transitOffset} 0)`);
- $('clouds').setAttribute('transform',`translate(${travelling&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches?model.cloudOffset:0} 0)`);
+ $('clouds').setAttribute('transform',`translate(${travelling&&!model.departing&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches?model.cloudOffset:0} 0)`);
  const caption=travelling&&model.reveal?`${model.destination.landmark} · ${model.destination.city}`:travelling?"your words are gently floating away":"you're still holding onto it";
  $('scene-caption').textContent=caption;
  $('scene').setAttribute('aria-label',`${stage==='complete'?'An open sky':travelling?'A small '+model.colour+' balloon':'An outstretched arm and hand holding a small '+model.colour+' balloon by its long string'} above ${caption}.`);
