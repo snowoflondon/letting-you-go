@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Destination artwork — letting-you-go</title><link rel="stylesheet" href="styles.css"><link rel="icon" href="data:,"><style>body{padding:24px;background:#f7f2e9}.gallery{max-width:920px;margin:auto}.gallery h1{font-size:32px;min-height:0;justify-content:start}.gallery>p{color:#696257;line-height:1.6}.art-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:28px;margin:28px 0}figure{margin:0}figcaption{padding:16px 0;line-height:1.6}figcaption small{display:block;color:#696257}a{color:#393732}.scene{border-radius:60px 60px 16px 16px}</style></head>
+<body><main class="gallery"><a href="./">← Back to the app</a><h1>A closer look at the journey.</h1><p>Seven destination studies. The balloon is shown at its new distant journey scale (58% of the holding size).</p><div class="art-grid" id="art-grid"></div></main>
+<script type="module">
+import {sceneFor} from './js/scenes.js';
+import {DISTANT_SCALE,balloonTransform} from './js/balloon-scale.js';
+for(const [id,title,description] of [['eiffel','Eiffel Tower · Paris','Curved iron legs, open base arch, observation platforms, and a park terrace.'],['golden-gate','Golden Gate Bridge · San Francisco','Suspension cables, cross-braced towers, concrete footings, and approaches anchored into coastal headlands.'],
+['tokyo','Tokyo Tower · Tokyo','Red-and-ivory lattice, antenna, stacked observation decks, and a landscaped urban setting.'],
+['tower-bridge','Tower Bridge · London','Paired stone towers, pointed roofs, upper walkway, blue suspension details, and riverbank approaches.'],
+['liberty','Statue of Liberty · New York City','Raised torch, seven-point crown, draped robes, stone pedestal, and an island in the harbour.'],
+['sydney','Sydney Opera House · Sydney','Overlapping ivory shells, shaded ribs, a waterfront podium, and harbour water.'],
+['rome','Colosseum · Rome','Tiered arcades, curved walls, broken upper edge, and a sunlit stone plaza.']]){
+ const figure=document.createElement('figure');
+ figure.innerHTML=`<div class="scene"><svg viewBox="0 0 400 410" role="img" aria-label="${title}"><rect width="400" height="410" fill="#dce7e8"/><g fill="#fffbf4" opacity=".7"><path d="M32 91c-5-15 8-23 19-19 5-22 37-20 40 0 19-4 26 14 18 19z"/></g>${sceneFor(id)}<g transform="${balloonTransform(DISTANT_SCALE)}"><path d="M200 155C185 185 213 204 198 248S187 289 199 310" fill="none" stroke="#74685b" stroke-width="1.4"/><ellipse cx="200" cy="90" rx="53" ry="65" fill="#bc7169"/><path d="m200 151-5 9h10z" fill="#bc7169"/></g></svg></div><figcaption>${title}<small>${description}</small></figcaption>`;
+ document.getElementById('art-grid').append(figure);
+}
+</script></body></html>

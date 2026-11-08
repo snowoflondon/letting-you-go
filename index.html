@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#f7f2e9">
+  <meta name="description" content="A quiet moment to write a worry and let it go.">
+  <title>letting-you-go</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<main class="app">
+  <header><a href="./" aria-label="letting-you-go, start again">letting-you-go<span class="brand-dot"></span></a></header>
+  <section class="intro"><h1 id="heading" tabindex="-1">What will you let go?</h1><p id="subtitle">Your worries will float away.</p></section>
+  <div class="scene" id="scene" role="img" aria-label="A hand holds a small red balloon above a quiet landscape.">
+    <svg viewBox="0 0 400 410" aria-hidden="true" focusable="false">
+      <defs><linearGradient id="sky" x2="0" y2="1"><stop stop-color="#dce7e8"/><stop offset="1" stop-color="#f3eee3"/></linearGradient></defs>
+      <rect width="400" height="410" fill="url(#sky)"/>
+      <g id="clouds" fill="#fffbf4" opacity=".8"><path d="M32 91c-5-15 8-23 19-19 5-22 37-20 40 0 19-4 26 14 18 19z"/><path d="M276 134c-5-13 6-22 18-18 5-19 32-19 37-1 14-2 24 10 17 19z"/></g>
+      <g id="landscape"></g>
+      <g id="balloon" fill="none"><path d="M200 155 C185 185 213 204 198 248 S187 289 199 310" stroke="#74685b" stroke-width="1.4"/><ellipse id="balloon-body" cx="200" cy="90" rx="53" ry="65" fill="#bc7169"/><path id="balloon-knot" d="m200 151-5 9h10z" fill="#bc7169"/><path d="M181 69c0-10 5-18 12-20" stroke="#fffbf4" stroke-width="4" stroke-linecap="round" opacity=".3"/><foreignObject x="158" y="40" width="84" height="102"><div xmlns="http://www.w3.org/1999/xhtml" id="balloon-text-box"><div id="balloon-preview"></div></div></foreignObject></g>
+      <g id="arm" stroke-linecap="round" stroke-linejoin="round">
+        <!-- Relaxed three-quarter grip: a soft palm and loosely curled fingers. -->
+        <path d="M128 430C141 400 156 378 173 351L190 341 211 357C194 382 184 406 180 430Z" fill="#b8ae9c"/>
+        <!-- The diagonal contour avoids the horizontal knuckle line of a clenched fist. -->
+        <path d="M175 350C181 340 184 333 181 324C177 313 180 303 187 299C191 296 196 296 200 300C204 299 210 301 212 305C218 305 222 309 221 314C226 318 224 324 220 330L211 341 204 353C195 360 184 357 175 350Z" fill="#d0a68a"/>
+        <path d="M216 311C224 316 222 324 217 330L207 343 202 351Q190 356 182 350L187 338Q198 341 205 332Z" fill="#bd9177" opacity=".28"/>
+        <!-- Nested curved folds describe fingers resting against the palm. -->
+        <path d="M201 305C208 302 215 306 215 311C215 315 211 317 206 316L200 315" fill="#dab295"/>
+        <path d="M205 317C213 314 219 317 218 322C217 326 213 328 207 326L202 325" fill="#d4aa8e"/>
+        <path d="M205 328C212 326 216 328 213 333L207 339" fill="#cca084"/>
+        <path d="M206 316Q211 318 214 316M206 327Q211 330 214 327" fill="none" stroke="#b98b70" stroke-width="1" opacity=".5"/>
+        <!-- A lightly bent thumb meets the curled index finger without squeezing. -->
+        <path d="M185 326C184 319 188 312 194 308L201 305C205 304 208 307 206 310L198 316C196 319 196 324 198 328C200 333 196 337 192 335" fill="#dfb89b"/>
+        <path d="M196 310L201 308" stroke="#edcbb0" stroke-width="2"/>
+        <path d="M198 286Q196 296 198 306" fill="none" stroke="#74685b" stroke-width="1.4"/>
+        <path d="M173 347Q187 358 205 351L211 360Q190 370 166 358Z" fill="#eee5d5"/>
+      </g>
+    </svg>
+    <span class="scene-caption" id="scene-caption">a little lighter, whenever you’re ready</span>
+  </div>
+  <section id="write-panel" class="panel">
+    <label for="worry" class="sr-only">Your worry</label>
+    <textarea id="worry" rows="3" placeholder="You can leave it here…" autocomplete="off" spellcheck="false" aria-describedby="count privacy"></textarea>
+    <div class="field-footer"><span>Just one worry at a time.</span><span id="count">0 / 200</span></div>
+    <fieldset><legend>Your balloon</legend><div class="colours"><label><input type="radio" name="colour" value="red" checked><span class="swatch red"></span>Red</label><label><input type="radio" name="colour" value="blue"><span class="swatch blue"></span>Blue</label><label><input type="radio" name="colour" value="green"><span class="swatch green"></span>Green</label></div></fieldset>
+    <button id="continue" class="primary" disabled>Continue <span aria-hidden="true">↗</span></button>
+  </section>
+  <section id="hold-panel" class="panel" hidden><p class="guidance" id="hold-guidance">Press and hold. Lift your finger when you’re ready.</p><button id="hold" class="primary hold" aria-describedby="hold-guidance">Hold your balloon</button><button id="edit" class="text-button">Back to your words</button></section>
+  <section id="journey-panel" class="panel" hidden><p id="message" class="reflection" aria-live="polite" aria-atomic="true"></p><button id="end" class="text-button">End this journey</button><button id="restart" class="primary" hidden>Release another worry <span aria-hidden="true">↗</span></button></section>
+  <footer id="privacy">Private, just for you. Your words aren’t saved or shared.</footer>
+  <noscript>This experience needs JavaScript enabled. Your words are never submitted.</noscript>
+</main>
+<script type="module" src="js/app.js"></script>
+</body>
+</html>
