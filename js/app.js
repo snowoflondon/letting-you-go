@@ -10,8 +10,8 @@ for(const element of distantBalloon.querySelectorAll('[id]')){element.classList.
 $('balloon').after(distantBalloon);
 distantBalloon.style.opacity='0';
 
-const colours={red:'#bc7169',blue:'#7196ae',green:'#819b7a'};
-let previousStage='',previousScene='',previousMessage='',lastTime=null,activePointer=null,activeKey=null,frame=null,composing=false,messageAnimation=null,finalTextShown=false,previousWorry=null;
+const colours={red:'#bc7169',blue:'#7196ae',green:'#819b7a',yellow:'#d7bd76'};
+let previousStage='',previousScene='',previousMessage='',lastTime=null,activePointer=null,activeKey=null,frame=null,composing=false,messageAnimation=null,finalTextShown=false,finalTextAppearing=false,completionAnimations=[],previousWorry=null;
 const travel=()=>['journey','dissolving','complete'].includes(model.stage);
 function render(){
  const stage=model.stage,travelling=travel();
@@ -19,6 +19,8 @@ function render(){
  $('write-panel').hidden=stage!=='write';$('hold-panel').hidden=!['ready','holding'].includes(stage);$('journey-panel').hidden=!travelling;
  $('continue').disabled=!model.worry.trim();$('count').textContent=`${characters(model.worry).length} / 200`;
  $('balloon-body').setAttribute('fill',colours[model.colour]);$('balloon-knot').setAttribute('fill',colours[model.colour]);
+ distantBalloon.querySelector('.balloon-body').setAttribute('fill',colours[model.colour]);
+ distantBalloon.querySelector('.balloon-knot').setAttribute('fill',colours[model.colour]);
  if(model.worry!==previousWorry){
   const preview=$('balloon-preview');preview.textContent=model.worry;
   let fontSize=13;preview.style.fontSize=fontSize+'px';
@@ -30,8 +32,8 @@ function render(){
  $('hold').classList.toggle('is-holding',stage==='holding');
  $('hold').setAttribute('aria-pressed',String(stage==='holding'));
  $('hold').textContent=stage==='holding'?'✓ Holding · release when ready':'Hold your balloon';
- $('heading').textContent=(['write','ready','holding'].includes(stage))?'What will you let go?':stage==='journey'?'A little farther away.':'In the sky, far away';
- $('subtitle').textContent=(['write','ready','holding'].includes(stage))?'Your worries will float away.':stage==='journey'?'With the winds, among the clouds':"You've let go of what you've held onto";
+ $('heading').textContent=(['write','ready','holding'].includes(stage))?'What will you let go?':!finalTextAppearing?'A little farther away.':'In the sky, far away';
+ $('subtitle').textContent=(['write','ready','holding'].includes(stage))?'Your worries will float away.':!finalTextAppearing?'With the winds, among the clouds':"You've let go of what you were holding onto";
  const reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
  const progress=travelling?departureProgress(model.elapsed):0;
  $('balloon').setAttribute('transform',balloonTransform(travelling&&!reducedMotion?journeyScale(model.elapsed):1));
@@ -54,7 +56,7 @@ function render(){
  const pan=$('landscape').lastElementChild?.querySelector('.transit-pan');
  if(pan)pan.setAttribute('transform',`translate(${window.matchMedia('(prefers-reduced-motion: reduce)').matches?0:model.transitOffset} 0)`);
  $('clouds').setAttribute('transform',`translate(${travelling&&!window.matchMedia('(prefers-reduced-motion: reduce)').matches?model.cloudOffset:0} 0)`);
- const caption=travelling&&model.reveal?`${model.destination.landmark} · ${model.destination.city}`:travelling?'somewhere beneath the same sky':'a little lighter, whenever you’re ready';
+ const caption=travelling&&model.reveal?`${model.destination.landmark} · ${model.destination.city}`:travelling?"your words are gently floating away":"you're still holding onto it";
  $('scene-caption').textContent=caption;
  $('scene').setAttribute('aria-label',`${stage==='complete'?'An open sky':travelling?'A small '+model.colour+' balloon':'An outstretched arm and hand holding a small '+model.colour+' balloon by its long string'} above ${caption}.`);
  if(travelling&&model.message!==previousMessage){
@@ -66,8 +68,10 @@ function render(){
     if(model.stage!=='complete'||previousMessage!==text)return;
     $('message').textContent=sentenceLines(text);
     messageAnimation.cancel();
-    messageAnimation=$('message').animate([{opacity:0},{opacity:1}],{duration:700});
-    return messageAnimation.finished.then(()=>{if(model.stage==='complete'&&previousMessage===text){finalTextShown=true;render();}});
+    finalTextAppearing=true;render();
+    completionAnimations=['message','heading','subtitle'].map(id=>$(id).animate([{opacity:0},{opacity:1}],{duration:700}));
+    messageAnimation=completionAnimations[0];
+    return Promise.all(completionAnimations.map(animation=>animation.finished)).then(()=>{if(model.stage==='complete'&&previousMessage===text){finalTextShown=true;render();}});
    }).catch(()=>{});
   }else{$('message').textContent=sentenceLines(text);}
  }
@@ -83,7 +87,7 @@ function render(){
 }
 function cancelHold(){activePointer=null;activeKey=null;model.cancel();render();}
 function release(){activePointer=null;activeKey=null;model.release();lastTime=null;render();startClock();}
-function reset(){finalTextShown=false;if(messageAnimation){messageAnimation.cancel();messageAnimation=null;}cancelAnimationFrame(frame);frame=null;lastTime=null;activePointer=null;activeKey=null;model.reset();$('worry').value='';document.querySelector('input[value="red"]').checked=true;previousMessage='';render();}
+function reset(){finalTextShown=false;finalTextAppearing=false;completionAnimations.forEach(animation=>animation.cancel());completionAnimations=[];if(messageAnimation){messageAnimation.cancel();messageAnimation=null;}cancelAnimationFrame(frame);frame=null;lastTime=null;activePointer=null;activeKey=null;model.reset();$('worry').value='';document.querySelector('input[value="red"]').checked=true;previousMessage='';render();}
 function startClock(){if(frame!==null||document.hidden)return;frame=requestAnimationFrame(tick);}
 function tick(now){frame=null;if(document.hidden)return;if(lastTime!==null)model.advance(now-lastTime);lastTime=now;render();if(['journey','dissolving'].includes(model.stage))startClock();}
 function input(){if(composing)return;model.write($('worry').value);if($('worry').value!==model.worry)$('worry').value=model.worry;render();}

@@ -7,7 +7,7 @@ export const locations = [
 export const passing = [
  'Your balloon floats past the {landmark} in {city}. Your worry has traveled so far away.',
  'Above the {landmark} in {city}, your balloon keeps moving. In this moment, the world feels so small.',
- 'Your balloon passes the {landmark} in {city}. Where will life take you?'
+ 'Your balloon passes the {landmark} in {city}. Where does the sky lead to?'
 ];
 export const closing = [
  'Your balloon comes to rest near the {landmark} in {city}, then fades into the sky. The brisk air fills the space it left behind.'
@@ -24,9 +24,9 @@ export const TRANSIT_MESSAGES = [
 ];
 export const COMPLETE_MESSAGE = 'What will you let go of next?';
 export const TRANSIT_LANDSCAPES = ['city','mountains','sea','forest','desert','snowy-mountains'];
-const TRANSIT_DRIFT = 26.4; // 10% faster than the original 24 units per five seconds.
-const DISSOLVE_START = 30000;
-const DISSOLVE_DURATION = 5000;
+const TRANSIT_DRIFT = 36.96; // Preserve the existing scrolling speed over seven-second segments.
+const DISSOLVE_START = 42000;
+const DISSOLVE_DURATION = 7000;
 export class Experience {
  constructor(){this.reset();}
  reset(){this.stage='write';this.worry='';this.colour='red';this.elapsed=0;this.route=[];this.messages=[];this.final='';this.transitScenes=[];}
@@ -39,13 +39,13 @@ export class Experience {
  advance(ms){if(!['journey','dissolving'].includes(this.stage))return;this.elapsed+=Math.max(0,ms);if(this.elapsed>=DISSOLVE_START+DISSOLVE_DURATION){this.stage='complete';this.worry='';}else if(this.elapsed>=DISSOLVE_START)this.stage='dissolving';}
  // Only the final dissolution can change visibility. Travel and location holds stay opaque.
  get balloonOpacity(){if(this.stage==='complete')return 0;if(this.stage!=='dissolving')return 1;return Math.max(0,1-(this.elapsed-DISSOLVE_START)/DISSOLVE_DURATION);}
- get index(){return this.elapsed>=25000?2:this.elapsed>=15000?1:this.elapsed>=5000?0:-1;}
+ get index(){return this.elapsed>=35000?2:this.elapsed>=21000?1:this.elapsed>=7000?0:-1;}
  get destination(){return this.index<0?null:this.route[this.index];}
- get reveal(){return this.elapsed>=25000||(this.elapsed>=5000&&this.elapsed<10000)||(this.elapsed>=15000&&this.elapsed<20000);}
- get transitIndex(){return this.elapsed>=20000?2:this.elapsed>=10000?1:0;}
- // A restrained 26.4-unit left-to-right drift over each five-second travel segment.
- get transitOffset(){if(this.stage!=='journey'||this.reveal)return 0;return -TRANSIT_DRIFT/2+TRANSIT_DRIFT*Math.min(1,(this.elapsed-this.transitIndex*10000)/5000);}
- get cloudOffset(){return TRANSIT_DRIFT*Math.min(3,Math.max(0,this.transitIndex)+Math.min(1,Math.max(0,(this.elapsed-this.transitIndex*10000)/5000)));}
+ get reveal(){return this.elapsed>=35000||(this.elapsed>=7000&&this.elapsed<14000)||(this.elapsed>=21000&&this.elapsed<28000);}
+ get transitIndex(){return this.elapsed>=28000?2:this.elapsed>=14000?1:0;}
+ // A restrained 36.96-unit left-to-right drift over each seven-second travel segment.
+ get transitOffset(){if(this.stage!=='journey'||this.reveal)return 0;return -TRANSIT_DRIFT/2+TRANSIT_DRIFT*Math.min(1,(this.elapsed-this.transitIndex*14000)/7000);}
+ get cloudOffset(){return TRANSIT_DRIFT*Math.min(3,Math.max(0,this.transitIndex)+Math.min(1,Math.max(0,(this.elapsed-this.transitIndex*14000)/7000)));}
  get transitScene(){return this.transitScenes[this.transitIndex];}
  get message(){if(this.stage==='complete')return COMPLETE_MESSAGE;return this.reveal&&this.destination?format(this.index===2?this.final:this.messages[this.index],this.destination):TRANSIT_MESSAGES[this.transitIndex];}
 }

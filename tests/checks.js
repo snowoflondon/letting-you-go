@@ -5,11 +5,11 @@ export function runChecks(){
  check(closing.length===1&&closing[0]==='Your balloon comes to rest near the {landmark} in {city}, then fades into the sky. The brisk air fills the space it left behind.','Only approved final destination template remains');
  check(TRANSIT_LANDSCAPES.includes('snowy-mountains')&&TRANSIT_LANDSCAPES.length===6,'Six landscapes including snowy mountains');
  for(const text of passing)check(text.includes('the {landmark}')&&text.includes('{city}'),'Every passing template includes the landmark article and city');
- const clouds=new Experience();clouds.write('sample');clouds.prepare();clouds.hold();clouds.release();clouds.advance(2500);check(Math.abs(clouds.cloudOffset-13.2)<1e-9,'Clouds match terrain speed: 13.2 units in 2.5 seconds');clouds.advance(2500);const stoppedClouds=clouds.cloudOffset;clouds.advance(5000);check(clouds.cloudOffset===stoppedClouds,'Clouds stay still at destination');clouds.advance(2500);check(Math.abs(clouds.cloudOffset-39.6)<1e-9,'Clouds resume at same speed in second transit');
+ const clouds=new Experience();clouds.write('sample');clouds.prepare();clouds.hold();clouds.release();clouds.advance(3500);check(Math.abs(clouds.cloudOffset-18.48)<1e-9,'Clouds match terrain speed: 18.48 units in 3.5 seconds');clouds.advance(3500);const stoppedClouds=clouds.cloudOffset;clouds.advance(7000);check(clouds.cloudOffset===stoppedClouds,'Clouds stay still at destination');clouds.advance(3500);check(Math.abs(clouds.cloudOffset-55.44)<1e-9,'Clouds resume at same speed in second transit');
  check(journeyScale(0)===1,'Balloon begins at full holding size');
- check(Math.abs(journeyScale(2500)-0.79)<1e-9,'Balloon shrinks smoothly during initial transit');
- check(journeyScale(5000)===DISTANT_SCALE&&journeyScale(30000)===DISTANT_SCALE,'Distant size stays fixed at all stops');
- check(departureProgress(0)===0&&departureProgress(5000)===1,'Reduced-motion crossfade reaches distant balloon');
+ check(Math.abs(journeyScale(3500)-0.79)<1e-9,'Balloon shrinks smoothly during initial transit');
+ check(journeyScale(7000)===DISTANT_SCALE&&journeyScale(42000)===DISTANT_SCALE,'Distant size stays fixed at all stops');
+ check(departureProgress(0)===0&&departureProgress(7000)===1,'Reduced-motion crossfade reaches distant balloon');
  const e=new Experience();
  e.write(' \n ');e.prepare();check(e.stage==='write','Whitespace cannot continue');
  e.write('👨‍👩‍👧‍👦'.repeat(201));check(characters(e.worry).length===200,'Emoji limit');check(e.worry==='👨‍👩‍👧‍👦'.repeat(200),'Emoji not split');
@@ -18,32 +18,32 @@ export function runChecks(){
  e.edit();check(e.stage==='write'&&characters(e.worry).length===200,'Edit preserves text');
  e.write('<script>sample text</script>');e.prepare();e.hold();e.release();check(e.stage==='journey','Immediate release starts journey');
  const route=e.route;e.release();check(e.route===route,'Duplicate release ignored');
- check(e.balloonOpacity===1,'Balloon visible at release');check(e.message===TRANSIT_MESSAGES[0],'Initial transit uses fixed text');check(Math.abs(e.transitOffset+13.2)<1e-9,'Transit starts with left offset');
- e.advance(4999);check(e.transitOffset>13&&e.transitOffset<13.2,'Transit slowly moves left to right');check(e.index===-1,'No early first reveal');e.advance(1);check(e.index===0&&e.reveal,'First reveal at 5s');
+ check(e.balloonOpacity===1,'Balloon visible at release');check(e.message===TRANSIT_MESSAGES[0],'Initial transit uses fixed text');check(Math.abs(e.transitOffset+18.48)<1e-9,'Transit starts with left offset');
+ e.advance(6999);check(e.transitOffset>18&&e.transitOffset<18.48,'Transit slowly moves left to right');check(e.index===-1,'No early first reveal');e.advance(1);check(e.index===0&&e.reveal,'First reveal at 7s');
  check(e.balloonOpacity===1,'Balloon visible at first location');check(e.transitOffset===0,'Destination stop stays still');
  const message=e.message;
- e.advance(4999);check(e.index===0&&e.reveal,'First location remains for five seconds');check(e.message===message,'First destination text stays with scene for full hold');
+ e.advance(6999);check(e.index===0&&e.reveal,'First location remains for seven seconds');check(e.message===message,'First destination text stays with scene for full hold');
  e.advance(1);check(!e.reveal&&e.message===TRANSIT_MESSAGES[1],'Transit scene and fixed text replace first destination together');
- e.advance(5000);check(e.index===1&&e.reveal,'Second reveal at 15s');
+ e.advance(7000);check(e.index===1&&e.reveal,'Second reveal at 21s');
  check(e.balloonOpacity===1,'Balloon visible at second location: old fade regression');const secondMessage=e.message;check(!TRANSIT_MESSAGES.includes(secondMessage),'Second destination has passing text');
- e.advance(4999);check(e.reveal&&e.index===1,'Second location remains for five seconds');check(e.message===secondMessage,'Second destination text stays with scene for full hold');
- e.advance(1);check(!e.reveal&&e.message===TRANSIT_MESSAGES[2],'Second transit scene and fixed text begin together at 20s');
- e.advance(5000);check(e.index===2&&e.reveal&&e.stage==='journey','Final reveal at 25s');
+ e.advance(6999);check(e.reveal&&e.index===1,'Second location remains for seven seconds');check(e.message===secondMessage,'Second destination text stays with scene for full hold');
+ e.advance(1);check(!e.reveal&&e.message===TRANSIT_MESSAGES[2],'Second transit scene and fixed text begin together at 28s');
+ e.advance(7000);check(e.index===2&&e.reveal&&e.stage==='journey','Final reveal at 35s');
  check(e.balloonOpacity===1,'Balloon visible at final arrival');
- e.advance(4999);check(e.balloonOpacity===1,'Balloon opaque through final hold');check(e.stage==='journey','Final location holds before dissolution');
- e.advance(1);check(e.stage==='dissolving','Dissolution begins at 30s');
+ e.advance(6999);check(e.balloonOpacity===1,'Balloon opaque through final hold');check(e.stage==='journey','Final location holds before dissolution');
+ e.advance(1);check(e.stage==='dissolving','Dissolution begins at 42s');
  check(e.worry.length>0,'Worry retained until dissolve finishes');const final=e.message;
- check(e.balloonOpacity===1,'Fade begins fully opaque at 30s');
- e.advance(2500);check(e.balloonOpacity===0.5,'Balloon half visible halfway through five-second dissolve');
- e.advance(2499);check(e.balloonOpacity>0,'Balloon remains until dissolve finishes');check(e.message===final,'Destination reflection remains through dissolution');check(e.stage==='dissolving'&&e.worry.length>0,'Full five-second dissolution');
- e.advance(1);check(e.stage==='complete'&&e.worry==='','Cleanup at 35s');check(e.message===COMPLETE_MESSAGE,'New prompt appears only after dissolution');
+ check(e.balloonOpacity===1,'Fade begins fully opaque at 42s');
+ e.advance(3500);check(e.balloonOpacity===0.5,'Balloon half visible halfway through seven-second dissolve');
+ e.advance(3499);check(e.balloonOpacity>0,'Balloon remains until dissolve finishes');check(e.message===final,'Destination reflection remains through dissolution');check(e.stage==='dissolving'&&e.worry.length>0,'Full seven-second dissolution');
+ e.advance(1);check(e.stage==='complete'&&e.worry==='','Cleanup at 49s');check(e.message===COMPLETE_MESSAGE,'New prompt appears only after dissolution');
  check(locations.length===7&&!locations.some(l=>l.id==='wall'),'Seven locations without Great Wall');
  check(sentenceLines('One sentence. Another sentence?')==='One sentence.\n\nAnother sentence?','Blank line between sentences');
  check(e.balloonOpacity===0,'Balloon disappears only after final dissolve');
  e.advance(100000);check(e.stage==='complete'&&e.message===COMPLETE_MESSAGE,'New post-dissolution prompt persists');e.reset();check(e.stage==='write'&&e.worry===''&&e.route.length===0,'Reset clears session');
  const timeline=new Experience();timeline.write('sample');timeline.prepare();timeline.hold();timeline.release();
- for(let ms=0;ms<30000;ms+=100){check(timeline.balloonOpacity===1,'Balloon stays opaque throughout travel and all holds');timeline.advance(100);}
- for(let i=0;i<100;i++){const x=new Experience();x.write('sample');x.prepare();x.hold();x.release();check(new Set(x.route.map(l=>l.id)).size===3,'Distinct locations');check(x.transitScenes.length===3&&new Set(x.transitScenes).size===3,'Three nonrepeating transit backgrounds');check(x.transitScenes.every(id=>TRANSIT_LANDSCAPES.includes(id)),'Transit backgrounds come from approved pool');const selected=[...x.transitScenes];check(x.transitScene===selected[0],'First transit background');x.advance(10000);check(x.transitScene===selected[1],'Second transit background');x.advance(10000);check(x.transitScene===selected[2],'Third transit background');check(new Set(x.messages).size===2,'Distinct passing messages');check(closing.includes(x.final),'Approved closing');x.reset();check(x.worry==='','Abandon cleanup');}
+ for(let ms=0;ms<42000;ms+=100){check(timeline.balloonOpacity===1,'Balloon stays opaque throughout travel and all holds');timeline.advance(100);}
+ for(let i=0;i<100;i++){const x=new Experience();x.write('sample');x.prepare();x.hold();x.release();check(new Set(x.route.map(l=>l.id)).size===3,'Distinct locations');check(x.transitScenes.length===3&&new Set(x.transitScenes).size===3,'Three nonrepeating transit backgrounds');check(x.transitScenes.every(id=>TRANSIT_LANDSCAPES.includes(id)),'Transit backgrounds come from approved pool');const selected=[...x.transitScenes];check(x.transitScene===selected[0],'First transit background');x.advance(14000);check(x.transitScene===selected[1],'Second transit background');x.advance(14000);check(x.transitScene===selected[2],'Third transit background');check(new Set(x.messages).size===2,'Distinct passing messages');check(closing.includes(x.final),'Approved closing');x.reset();check(x.worry==='','Abandon cleanup');}
  for(const l of locations)for(const t of [...passing,...closing])check(!format(t,l).includes('{'),'Complete template substitution');
  return `${count} logic checks passed. Browser touch, visibility, layout, and screen-reader checks require a manual walkthrough.`;
 }

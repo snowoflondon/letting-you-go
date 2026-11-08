@@ -45,7 +45,7 @@ enum Content {
     static let passing = [
         "Your balloon floats past {landmark} in {city}. Your worry has traveled so far away.",
         "Above {city}, your balloon keeps moving. In this moment, the world feels so small.",
-        "Your balloon passes {landmark}. Where will life take you?"
+        "Your balloon passes {landmark}. Where does the sky lead to?"
     ]
     static let closing = [
         "Your balloon has traveled far, far away. The sky stretches as far as eyes can see.",

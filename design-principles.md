@@ -37,8 +37,9 @@ The following values are starting points for art direction, not verified accessi
 | Red balloon | Soft terracotta red | `#BC7169` |
 | Blue balloon | Dusty blue | `#7196AE` |
 | Green balloon | Muted leaf green | `#819B7A` |
+| Yellow balloon | Soft ochre yellow | `#D7BD76` |
 
-Balloon colours must remain recognizably **red, blue, or green**. Use one colour consistently throughout each journey. The Phase 1 wireframe uses a writing-screen colour picker so each option can be reviewed; the final selection treatment can be refined during visual polish.
+Balloon colours must remain recognizably **red, blue, green, or yellow**. Use one colour consistently throughout each journey. The Phase 1 wireframe uses a writing-screen colour picker so each option can be reviewed; the final selection treatment can be refined during visual polish.
 
 Keep landmarks and scenery quieter than the balloon. Adjust local backgrounds or add a subtle contour when needed to preserve its silhouette. Landmark colours may vary within the muted palette to retain recognizable features.
 
@@ -64,7 +65,7 @@ The balloon is the visual thread connecting the experience. Give it a simple rou
 
 Use a moderately larger balloon body, approximately 26% of the scene width, while retaining the long string and generous sky. The full worry remains visible inside the balloon during writing, ready, holding, travel, and final dissolution. Wrap text and adjust its size to fit the 200-character limit; the input field remains the comfortable editing surface.
 
-Place the writing inside the same SVG group as the balloon so both fade together over five seconds. Clear the text at completion or abandonment.
+Place the writing inside the same SVG group as the balloon so both fade together over seven seconds. Clear the text at completion or abandonment.
 
 ## First-person holding view
 
@@ -96,11 +97,11 @@ Prepare a small family of matching landscapes:
 | Forest | Layered, softly shaped trees in muted greens |
 | Desert | Warm sand dunes and recognizable pyramid silhouettes |
 
-Select three distinct transit landscapes randomly at release from city, mountains, snowy mountains, sea, forest, and desert with pyramids. Never repeat a transit background within a journey. Use these messages in order: “Your worries are floating away, somewhere in the sky.”; “Your worries travel even farther, farther away.”; “With the wind, your worries drift away.” Keep each destination image and its destination message together for the full five-second stop; switch both to transit together afterward.
+Select three distinct transit landscapes randomly at release from city, mountains, snowy mountains, sea, forest, and desert with pyramids. Never repeat a transit background within a journey. Use these messages in order: “Your worries are floating away, somewhere in the sky.”; “Your worries travel even farther, farther away.”; “With the wind, your worries drift away.” Keep each destination image and its destination message together for the full seven-second stop; switch both to transit together afterward.
 
 Transit scenery should feel anonymous and spacious. It does not need to depict a real route or suggest geographic accuracy. Keep the balloon's position and scale consistent when switching between transit and destination scenes.
 
-**Floating combines composition with restrained landscape movement:** the balloon hangs in open sky while transit scenery moves slowly from left to right. Use a 26.4-unit drift across each five-second segment within the 400-unit SVG viewBox, with neighbouring landscape tiles covering the edges. Drive movement from active journey time so hidden tabs pause it. Keep destination scenes still, and disable the drift when reduced motion is requested.
+**Floating combines composition with restrained landscape movement:** the balloon hangs in open sky while transit scenery moves slowly from left to right. Use a 36.96-unit drift across each seven-second segment within the 400-unit SVG viewBox, with neighbouring landscape tiles covering the edges. Drive movement from active journey time so hidden tabs pause it. Keep destination scenes still, and disable the drift when reduced motion is requested.
 
 ## Destination scenes
 
@@ -128,10 +129,10 @@ Use slow, restrained motion. Transit landscapes drift left to right; respect `pr
 - Keep the camera and balloon fixed. Transit terrain and clouds move slowly left to right at the same rate; avoid zooms, parallax, and rapid scene sweeps.
 - Convey distance through changing scenery and messages rather than speed or dramatic displacement.
 - Keep text still while it is being read. Scene transitions must not repeatedly fade or reposition an active message.
-- Fit transit, destination reveals, and transitions into the existing approximately 35-second schedule. Do not add time for separate travel screens.
-- Reveal passing locations near 5 and 15 seconds, then the destination near 25 seconds. Hold each for five seconds, with five-second transit segments between locations. Start the final five-second dissolve at 30 seconds; complete at 35 seconds.
+- Fit transit, destination reveals, and transitions into the existing approximately 49-second schedule. Do not add time for separate travel screens.
+- Reveal passing locations near 5 and 21 seconds, then the destination near 35 seconds. Hold each for seven seconds, with seven-second transit segments between locations. Start the final seven-second dissolve at 42 seconds; complete at 49 seconds.
 
-At the destination, hold the scene for five seconds, then fade the balloon and string gently into the sky over five seconds. A simple opacity dissolve is preferred. If points of light are used, keep them sparse, nearly stationary, and softly fading. Use no popping sound, sudden flash, or confetti.
+At the destination, hold the scene for seven seconds, then fade the balloon and string gently into the sky over seven seconds. A simple opacity dissolve is preferred. If points of light are used, keep them sparse, nearly stationary, and softly fading. Use no popping sound, sudden flash, or confetti.
 
 Keep the destination reflection while the balloon is intact and dissolving. After dissolution, gently fade it out and replace it with “What will you let go of next?” Keep this new prompt and the final landscape visible indefinitely. Nothing should hurry the user to start again.
 
@@ -162,7 +163,7 @@ Use a local system font stack such as `system-ui, -apple-system, BlinkMacSystemF
 ## Design review checklist
 
 - Does the scene feel warm, calm, and soft without oversaturated colour?
-- Is the balloon clearly red, blue, or green and consistent throughout the experience?
+- Is the balloon clearly red, blue, green, or yellow and consistent throughout the experience?
 - Is the balloon body small relative to the long visible string?
 - Before release, does an outstretched first-person arm end in a hand that visibly grips the string?
 - Does the arm gently disappear after release without a camera jump?
@@ -190,6 +191,12 @@ Reveal “Release another worry” only after the final question has finished fa
 
 ## Balloon distance and destination review
 
-Keep the full-size balloon before release for writing and holding. During the first five-second transit, smoothly shrink the body, string, and writing together to 58% of their holding size, centred around the balloon body. Keep this distant scale throughout all destination stops and final dissolution. For reduced-motion users, crossfade between fixed full-size and distant balloons instead of scaling.
+Keep the full-size balloon before release for writing and holding. During the first seven-second transit, smoothly shrink the body, string, and writing together to 58% of their holding size, centred around the balloon body. Keep this distant scale throughout all destination stops and final dissolution. For reduced-motion users, crossfade between fixed full-size and distant balloons instead of scaling.
 
 All seven updated destination scenes are integrated into the main journey. Visit `http://localhost:8000/artwork.html` to review each scene with the same distant balloon scale used in the app.
+
+## Journey message wrapping
+
+Use one consistent 19px font size for all main messages below the illustration, including transit, destination reflections, and the final question. Apply balanced line wrapping to reduce short trailing lines, retaining the blank line between sentences. Do not resize individual messages by phase; preserve browser text enlargement.
+
+Primary action buttons use muted sage green (`#596E58`) with warm cream text (`#FFFBF4`) and a darker sage pressed state (`#485C47`). Keep the distinct outline, check mark, and label change on the held control.

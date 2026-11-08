@@ -2,7 +2,7 @@
 
 A lightwseven, mobile-first web app for expressing and releasing one worry at a time.
 
-Write a worry, hold a balloon, and let it go when ready. Follow the balloon through three locations around the world during a roughly 35-second journey. At its destination, the balloon gently fades into the sky.
+Write a worry, hold a balloon, and let it go when ready. Follow the balloon through three locations around the world during a roughly 49-second journey. At its destination, the balloon gently fades into the sky.
 
 The experience should feel quiet, warm, and unhurried. Animation stays gentle, with slow landscape motion during transit and a static alternative for reduced-motion users.
 
@@ -49,8 +49,8 @@ With the local server running, open **http://localhost:8000/tests/runner.html**.
 - Press and immediately release the hold button; no minimum duration is required.
 - Release outside the control, interrupt the pointer, or switch tabs while holding; the journey must not start.
 - Check the equivalent keyboard and screen-reader release controls.
-- Follow landmark reveals near 5, 15, and 25 active seconds. Each destination image and its message stay together for five seconds. Transit scenery and the fixed transit message replace them together between stops.
-- At about 25 seconds, confirm the final destination and reflection appear. Hold for five seconds, then fade the balloon over five seconds. At about 35 seconds, enter complete and clear the worry.
+- Follow landmark reveals near 5, 15, and 35 active seconds. Each destination image and its message stay together for seven seconds. Transit scenery and the fixed transit message replace them together between stops.
+- At about 35 seconds, confirm the final destination and reflection appear. Hold for seven seconds, then fade the balloon over seven seconds. At about 49 seconds, enter complete and clear the worry.
 - Hide the tab during the journey or dissolution, wait, and return; hidden time must not advance the experience.
 - End a journey or start another; verify the writing field is empty.
 - Reload the page; verify no session or worry is restored.
@@ -99,16 +99,16 @@ At release, select three distinct location records, two different passing messag
 
 | Active elapsed time | Event |
 | --- | --- |
-| 0–5 seconds | Transit toward the first location. |
-| 5–10 seconds | Hold the first location and passing message. |
-| 10–15 seconds | Transit toward the second location. |
-| 15–20 seconds | Hold the second location and passing message. |
-| 20–25 seconds | Transit toward the final destination. |
-| 25–30 seconds | Hold the final destination and reflection. |
-| 30–35 seconds | Gently dissolve the balloon over five seconds. |
-| After 35 seconds | Clear the worry; fade to the persistent “What will you let go of next?” prompt. |
+| 0–7 seconds | Transit toward the first location. |
+| 7–14 seconds | Hold the first location and passing message. |
+| 14–21 seconds | Transit toward the second location. |
+| 21–28 seconds | Hold the second location and passing message. |
+| 28–35 seconds | Transit toward the final destination. |
+| 35–42 seconds | Hold the final destination and reflection. |
+| 42–49 seconds | Gently dissolve the balloon over seven seconds. |
+| After 49 seconds | Clear the worry; fade to the persistent “What will you let go of next?” prompt. |
 
-Location reveals and transitions fit within the approximately 35-second journey. The closing screen has no time limit.
+Location reveals and transitions fit within the approximately 49-second journey. The closing screen has no time limit.
 
 Use generic transit scenes between destination reveals: a small balloon above a horizontal city, mountain, sea, forest, or desert landscape with a few clouds. Use recognizable landmark illustrations or silhouettes for destinations. Geographic accuracy and live maps are unnecessary. This is a private, symbolic journey; other people do not receive or read the balloon.
 
@@ -129,7 +129,7 @@ Clear the worry from active app state when the balloon finishes dissolving. Keep
 - Keep landscape browser windows usable through scrolling; do not require device rotation or an orientation lock.
 - Use a smaller balloon body and a substantially longer visible string. Before release, show the first-person outstretched arm and hand holding that string.
 
-- Balloon colours are limited to **red, blue, or green**. For the wireframe, choose the colour using the writing-screen picker.
+- Balloon colours are limited to **red, blue, green, or yellow**. For the wireframe, choose the colour using the writing-screen picker.
 - Keep the selected balloon colour consistent throughout a journey.
 - Keep motion slow and steady; disable transit scrolling when the browser requests reduced motion.
 - Keep the balloon stable. Move transit landscapes and clouds slowly left to right at the same rate; hold destination scenes still and use gentle crossfades.
@@ -165,7 +165,7 @@ Use these exact messages in order:
 
 At release, randomly select three distinct generic landscapes from **city, mountains, snowy mountains, sea, forest, and desert with pyramids**. Use one per transit segment; no transit background repeats within a journey. Keep that selection fixed throughout the journey.
 
-Each destination image and its passing message remain paired for a full five-second stop. Transit imagery and its matching transit message replace them together.
+Each destination image and its passing message remain paired for a full seven-second stop. Transit imagery and its matching transit message replace them together.
 
 ### Passing messages
 
@@ -175,7 +175,7 @@ Select two different templates per journey. Preserve the wording exactly, substi
 
 > Above the {landmark} in {city}, your balloon keeps moving. In this moment, the world feels so small.
 
-> Your balloon passes the {landmark} in {city}. Where will life take you?
+> Your balloon passes the {landmark} in {city}. Where does the sky lead to?
 
 ### Final reflections
 
@@ -216,7 +216,7 @@ The POC needs no accounts, backend, social features, or saved worry history.
 - Select three distinct locations and two different passing templates.
 - Preserve exact message wording and substitute placeholders correctly.
 - Distinguish intentional release from cancellation and prevent duplicate journeys.
-- Verify reveals near 5, 15, and 25 seconds of active journey time.
+- Verify reveals near 5, 15, and 35 seconds of active journey time.
 - Verify tab visibility, focus loss during holding, pointer cancellation, page reload, abandonment, and restart behavior.
 - Confirm worry text is cleared and never persisted or transmitted.
 - Review every location and message on small portrait screens, with browser text enlargement and zoom, and with the on-screen keyboard open.
@@ -246,8 +246,8 @@ The balloon body is enlarged to fit wrapped input. Keep the full worry on it for
 | Phase | Title | Subtitle |
 | --- | --- | --- |
 | Write / Ready / Holding | What will you let go? | Your worries will float away. |
-| Journey | A little farther away. | With the winds, among the clouds |
-| Dissolving / Complete | In the sky, far away | You've let go of what you've held onto |
+| Journey / Dissolving / outgoing final reflection | A little farther away. | With the winds, among the clouds |
+| Final question appearing / Complete | In the sky, far away | You've let go of what you were holding onto |
 
 The post-dissolution body question remains **What will you let go of next?**
 
@@ -257,6 +257,8 @@ With the local server running, open **http://localhost:8000/artwork.html** to in
 
 ## Balloon distance and destination review
 
-Keep the full-size balloon before release for writing and holding. During the first five-second transit, smoothly shrink the body, string, and writing together to 58% of their holding size, centred around the balloon body. Keep this distant scale throughout all destination stops and final dissolution. For reduced-motion users, crossfade between fixed full-size and distant balloons instead of scaling.
+Keep the full-size balloon before release for writing and holding. During the first seven-second transit, smoothly shrink the body, string, and writing together to 58% of their holding size, centred around the balloon body. Keep this distant scale throughout all destination stops and final dissolution. For reduced-motion users, crossfade between fixed full-size and distant balloons instead of scaling.
 
 All seven updated destination scenes are integrated into the main journey. Visit `http://localhost:8000/artwork.html` to review each scene with the same distant balloon scale used in the app.
+
+The closing title, subtitle, and “What will you let go of next?” fade in together after dissolution and the outgoing destination reflection have finished. The restart button appears after that shared fade-in completes.

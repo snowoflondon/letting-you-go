@@ -1,6 +1,6 @@
 export const DISTANT_SCALE = 0.58;
 export function departureProgress(elapsed) {
- return Math.min(1, Math.max(0, elapsed / 5000));
+ return Math.min(1, Math.max(0, elapsed / 7000));
 }
 export function journeyScale(elapsed) {
  const t = departureProgress(elapsed);
