@@ -1,5 +1,5 @@
 import {Experience,characters,sentenceLines} from './state.js';
-import {sceneFor} from './scenes.js';
+import {sceneFor} from './scenes.js?v=transit-landscapes-4';
 import {DISTANT_SCALE,departureProgress,journeyScale,balloonTransform} from './balloon-scale.js';
 const $=id=>document.getElementById(id);
 const model=new Experience();

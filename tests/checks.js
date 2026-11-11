@@ -3,13 +3,13 @@ import {Experience,characters,locations,passing,closing,format,sentenceLines,TRA
 export function runChecks(){
  let count=0;const check=(value,label)=>{count++;if(!value)throw new Error(label);};
  check(closing.length===1&&closing[0]==='Your balloon comes to rest near the {landmark} in {city}, then fades into the sky. The brisk air fills the space it left behind.','Only approved final destination template remains');
- check(TRANSIT_LANDSCAPES.includes('snowy-mountains')&&TRANSIT_LANDSCAPES.length===6,'Six landscapes including snowy mountains');
+ check(TRANSIT_LANDSCAPES.includes('snowy-mountains')&&TRANSIT_LANDSCAPES.length===8&&!TRANSIT_LANDSCAPES.includes('city'),'Eight transit landscapes, with city reserved for landing');
  for(const text of passing)check(text.includes('the {landmark}')&&text.includes('{city}'),'Every passing template includes the landmark article and city');
- const clouds=new Experience();clouds.write('sample');clouds.prepare();clouds.hold();clouds.release();clouds.advance(7000);clouds.advance(3500);check(Math.abs(clouds.cloudOffset-18.48)<1e-9,'Clouds match terrain speed: 18.48 units in 3.5 seconds');clouds.advance(3500);const stoppedClouds=clouds.cloudOffset;clouds.advance(7000);check(clouds.cloudOffset===stoppedClouds,'Clouds stay still at destination');clouds.advance(3500);check(Math.abs(clouds.cloudOffset-55.44)<1e-9,'Clouds resume at same speed in second transit');
+ const clouds=new Experience();clouds.write('sample');clouds.prepare();clouds.hold();clouds.release();clouds.advance(3500);clouds.advance(3500);check(Math.abs(clouds.cloudOffset-18.48)<1e-9,'Clouds match terrain speed: 18.48 units in 3.5 seconds');clouds.advance(3500);const stoppedClouds=clouds.cloudOffset;clouds.advance(7000);check(clouds.cloudOffset===stoppedClouds,'Clouds stay still at destination');clouds.advance(3500);check(Math.abs(clouds.cloudOffset-55.44)<1e-9,'Clouds resume at same speed in second transit');
  check(journeyScale(0)===1,'Balloon begins at full holding size');
- check(Math.abs(journeyScale(3500)-0.79)<1e-9,'Balloon shrinks smoothly during initial transit');
- check(journeyScale(7000)===DISTANT_SCALE&&journeyScale(42000)===DISTANT_SCALE,'Distant size stays fixed at all stops');
- check(departureProgress(0)===0&&departureProgress(7000)===1,'Reduced-motion crossfade reaches distant balloon');
+ check(Math.abs(journeyScale(1750)-0.79)<1e-9,'Balloon shrinks smoothly during initial transit');
+ check(journeyScale(3500)===DISTANT_SCALE&&journeyScale(42000)===DISTANT_SCALE,'Distant size stays fixed at all stops');
+ check(departureProgress(0)===0&&departureProgress(3500)===1,'Reduced-motion crossfade reaches distant balloon');
  const e=new Experience();
  e.write(' \n ');e.prepare();check(e.stage==='write','Whitespace cannot continue');
  e.write('👨‍👩‍👧‍👦'.repeat(201));check(characters(e.worry).length===200,'Emoji limit');check(e.worry==='👨‍👩‍👧‍👦'.repeat(200),'Emoji not split');
@@ -17,7 +17,7 @@ export function runChecks(){
  e.hold();e.cancel();e.release();check(e.stage==='ready'&&e.route.length===0,'Cancellation prevents release');
  e.edit();check(e.stage==='write'&&characters(e.worry).length===200,'Edit preserves text');
  e.write('<script>sample text</script>');e.prepare();e.hold();e.release();check(e.stage==='journey','Immediate release starts journey');
- check(e.departing&&e.elapsed===0,'Release begins departure on original background');e.advance(6999);check(e.departing&&e.elapsed===0&&e.transitOffset===0,'Shrink finishes before any travel');e.advance(1);check(!e.departing&&e.elapsed===0,'Transit begins after shrink finishes');
+ check(e.departing&&e.elapsed===0,'Release begins departure on original background');e.advance(3499);check(e.departing&&e.elapsed===0&&e.transitOffset===0,'Shrink finishes before any travel');e.advance(1);check(!e.departing&&e.elapsed===0,'Transit begins after shrink finishes');
  const route=e.route;e.release();check(e.route===route,'Duplicate release ignored');
  check(e.balloonOpacity===1,'Balloon visible at release');check(e.message===TRANSIT_MESSAGES[0],'Initial transit uses fixed text');check(Math.abs(e.transitOffset+18.48)<1e-9,'Transit starts with left offset');
  e.advance(6999);check(e.transitOffset>18&&e.transitOffset<18.48,'Transit slowly moves left to right');check(e.index===-1,'No early first reveal');e.advance(1);check(e.index===0&&e.reveal,'First reveal at 7s');
@@ -35,16 +35,16 @@ export function runChecks(){
  e.advance(1);check(e.stage==='dissolving','Dissolution begins at 42s');
  check(e.worry.length>0,'Worry retained until dissolve finishes');const final=e.message;
  check(e.balloonOpacity===1,'Fade begins fully opaque at 42s');
- e.advance(3500);check(e.balloonOpacity===0.5,'Balloon half visible halfway through seven-second dissolve');
- e.advance(3499);check(e.balloonOpacity>0,'Balloon remains until dissolve finishes');check(e.message===final,'Destination reflection remains through dissolution');check(e.stage==='dissolving'&&e.worry.length>0,'Full seven-second dissolution');
- e.advance(1);check(e.stage==='complete'&&e.worry==='','Cleanup at 49s');check(e.message===COMPLETE_MESSAGE,'New prompt appears only after dissolution');
+ e.advance(1750);check(e.balloonOpacity===0.5,'Balloon half visible halfway through 3.5-second dissolve');
+ e.advance(1749);check(e.balloonOpacity>0,'Balloon remains until dissolve finishes');check(e.message===final,'Destination reflection remains through dissolution');check(e.stage==='dissolving'&&e.worry.length>0,'Full 3.5-second dissolution');
+ e.advance(1);check(e.stage==='complete'&&e.worry==='','Cleanup at 45.5s');check(e.message===COMPLETE_MESSAGE,'New prompt appears only after dissolution');
  check(locations.length===7&&!locations.some(l=>l.id==='wall'),'Seven locations without Great Wall');
  check(sentenceLines('One sentence. Another sentence?')==='One sentence.\n\nAnother sentence?','Blank line between sentences');
  check(e.balloonOpacity===0,'Balloon disappears only after final dissolve');
  e.advance(100000);check(e.stage==='complete'&&e.message===COMPLETE_MESSAGE,'New post-dissolution prompt persists');e.reset();check(e.stage==='write'&&e.worry===''&&e.route.length===0,'Reset clears session');
- const timeline=new Experience();timeline.write('sample');timeline.prepare();timeline.hold();timeline.release();timeline.advance(7000);
+ const timeline=new Experience();timeline.write('sample');timeline.prepare();timeline.hold();timeline.release();timeline.advance(3500);
  for(let ms=0;ms<42000;ms+=100){check(timeline.balloonOpacity===1,'Balloon stays opaque throughout travel and all holds');timeline.advance(100);}
- for(let i=0;i<100;i++){const x=new Experience();x.write('sample');x.prepare();x.hold();x.release();x.advance(7000);check(new Set(x.route.map(l=>l.id)).size===3,'Distinct locations');check(x.transitScenes.length===3&&new Set(x.transitScenes).size===3,'Three nonrepeating transit backgrounds');check(x.transitScenes.every(id=>TRANSIT_LANDSCAPES.includes(id)),'Transit backgrounds come from approved pool');const selected=[...x.transitScenes];check(x.transitScene===selected[0],'First transit background');x.advance(14000);check(x.transitScene===selected[1],'Second transit background');x.advance(14000);check(x.transitScene===selected[2],'Third transit background');check(new Set(x.messages).size===2,'Distinct passing messages');check(closing.includes(x.final),'Approved closing');x.reset();check(x.worry==='','Abandon cleanup');}
+ for(let i=0;i<100;i++){const x=new Experience();x.write('sample');x.prepare();x.hold();x.release();x.advance(3500);check(new Set(x.route.map(l=>l.id)).size===3,'Distinct locations');check(x.transitScenes.length===3&&new Set(x.transitScenes).size===3,'Three nonrepeating transit backgrounds');check(x.transitScenes.every(id=>TRANSIT_LANDSCAPES.includes(id)),'Transit backgrounds come from approved pool');const selected=[...x.transitScenes];check(x.transitScene===selected[0],'First transit background');x.advance(14000);check(x.transitScene===selected[1],'Second transit background');x.advance(14000);check(x.transitScene===selected[2],'Third transit background');check(new Set(x.messages).size===2,'Distinct passing messages');check(closing.includes(x.final),'Approved closing');x.reset();check(x.worry==='','Abandon cleanup');}
  for(const l of locations)for(const t of [...passing,...closing])check(!format(t,l).includes('{'),'Complete template substitution');
  return `${count} logic checks passed. Browser touch, visibility, layout, and screen-reader checks require a manual walkthrough.`;
 }

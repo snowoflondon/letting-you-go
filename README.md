@@ -163,7 +163,7 @@ Use these exact messages in order:
 2. After the first destination: “Your worries travel even farther, farther away.”
 3. After the second destination: “With the wind, your worries drift away.”
 
-At release, randomly select three distinct generic landscapes from **city, mountains, snowy mountains, sea, forest, and desert with pyramids**. Use one per transit segment; no transit background repeats within a journey. Keep that selection fixed throughout the journey.
+At release, randomly select three distinct generic landscapes from **mountains, snowy mountains, sea, forest, desert with pyramids, wheat field with one red tractor, icy sea, and autumn forest**. Use one per transit segment; no transit background repeats within a journey. Keep that selection fixed throughout the journey.
 
 Each destination image and its passing message remain paired for a full seven-second stop. Transit imagery and its matching transit message replace them together.
 
@@ -268,3 +268,13 @@ The closing title, subtitle, and “What will you let go of next?” fade in tog
 After release, keep the original background and clouds stationary while the balloon shrinks to 58% size over seven seconds. Fade the arm away as before. Only after the balloon reaches its distant size should the first randomized transit landscape crossfade in and the travel clock begin. Reduced-motion users crossfade between fixed balloon sizes against the same original background.
 
 The existing 49-second journey follows this separate seven-second departure, for approximately 56 seconds from release to completion. All timing pauses while the tab is hidden.
+
+## Current departure and dissolution timing
+
+Departure shrinking lasts **3.5 seconds**, followed by three seven-second transit segments and three seven-second destination holds. Final dissolution lasts **3.5 seconds**. The total is **49 seconds** from release to balloon disappearance, followed by the closing text fade. Travel and destination hold durations are unchanged.
+
+## New transit landscape studies
+
+Cityscape is reserved for the landing/holding view and departure; it is not in the randomized transit pool. The pool now contains eight landscapes: mountains, snowy mountains, sea, forest, desert with pyramids, wheat field with a single red tractor, icy sea with icebergs and glaciers, and autumn forest with muted red/orange trees. Each journey selects three without repetition.
+
+Review the three new SVG studies at `http://localhost:8000/landscapes.html`. They follow the same soft, muted art direction and use the existing transit movement.

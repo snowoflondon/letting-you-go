@@ -24,10 +24,10 @@ export const TRANSIT_MESSAGES = [
  'With the wind, your worries drift away.'
 ];
 export const COMPLETE_MESSAGE = 'What will you let go of next?';
-export const TRANSIT_LANDSCAPES = ['city','mountains','sea','forest','desert','snowy-mountains'];
+export const TRANSIT_LANDSCAPES = ['mountains','sea','forest','desert','snowy-mountains','wheat-field','icy-sea','autumn-forest'];
 const TRANSIT_DRIFT = 36.96; // Preserve the existing scrolling speed over seven-second segments.
 const DISSOLVE_START = 42000;
-const DISSOLVE_DURATION = 7000;
+const DISSOLVE_DURATION = 3500;
 export class Experience {
  constructor(){this.reset();}
  reset(){this.stage='write';this.worry='';this.colour='red';this.elapsed=0;this.departureElapsed=0;this.route=[];this.messages=[];this.final='';this.transitScenes=[];}

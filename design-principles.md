@@ -97,7 +97,7 @@ Prepare a small family of matching landscapes:
 | Forest | Layered, softly shaped trees in muted greens |
 | Desert | Warm sand dunes and recognizable pyramid silhouettes |
 
-Select three distinct transit landscapes randomly at release from city, mountains, snowy mountains, sea, forest, and desert with pyramids. Never repeat a transit background within a journey. Use these messages in order: “Your worries are floating away, somewhere in the sky.”; “Your worries travel even farther, farther away.”; “With the wind, your worries drift away.” Keep each destination image and its destination message together for the full seven-second stop; switch both to transit together afterward.
+Select three distinct transit landscapes randomly at release from mountains, snowy mountains, sea, forest, desert with pyramids, wheat field with one red tractor, icy sea, and autumn forest. Never repeat a transit background within a journey. Use these messages in order: “Your worries are floating away, somewhere in the sky.”; “Your worries travel even farther, farther away.”; “With the wind, your worries drift away.” Keep each destination image and its destination message together for the full seven-second stop; switch both to transit together afterward.
 
 Transit scenery should feel anonymous and spacious. It does not need to depict a real route or suggest geographic accuracy. Keep the balloon's position and scale consistent when switching between transit and destination scenes.
 
@@ -206,3 +206,15 @@ Primary action buttons use muted sage green (`#596E58`) with warm cream text (`#
 After release, keep the original background and clouds stationary while the balloon shrinks to 58% size over seven seconds. Fade the arm away as before. Only after the balloon reaches its distant size should the first randomized transit landscape crossfade in and the travel clock begin. Reduced-motion users crossfade between fixed balloon sizes against the same original background.
 
 The existing 49-second journey follows this separate seven-second departure, for approximately 56 seconds from release to completion. All timing pauses while the tab is hidden.
+
+## Current departure and dissolution timing
+
+Departure shrinking lasts **3.5 seconds**, followed by three seven-second transit segments and three seven-second destination holds. Final dissolution lasts **3.5 seconds**. The total is **49 seconds** from release to balloon disappearance, followed by the closing text fade. Travel and destination hold durations are unchanged.
+
+The landing/holding background and generic city transit background use the same shared city illustration, including its windows, outlines, doors, and rooftop details. Transit adds horizontal motion; there is no separate landing-city drawing.
+
+## New transit landscape studies
+
+Cityscape is reserved for the landing/holding view and departure; it is not in the randomized transit pool. The pool now contains eight landscapes: mountains, snowy mountains, sea, forest, desert with pyramids, wheat field with a single red tractor, icy sea with icebergs and glaciers, and autumn forest with muted red/orange trees. Each journey selects three without repetition.
+
+Review the three new SVG studies at `http://localhost:8000/landscapes.html`. They follow the same soft, muted art direction and use the existing transit movement.
